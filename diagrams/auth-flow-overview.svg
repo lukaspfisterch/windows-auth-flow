@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="280" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="20" y="35" font-size="20" font-weight="600" fill="#1b1b1b">Windows Authentication Flow (Layered Model)</text>
+
+  <!-- Layer boxes -->
+  <g font-size="14" font-weight="500">
+    <rect x="40"  y="70" width="150" height="80" rx="8" fill="#e8f1fc" stroke="#4f7ed9"/>
+    <rect x="220" y="70" width="150" height="80" rx="8" fill="#eaf7e8" stroke="#46a758"/>
+    <rect x="400" y="70" width="150" height="80" rx="8" fill="#fff3cd" stroke="#d9a000"/>
+    <rect x="580" y="70" width="150" height="80" rx="8" fill="#fdecec" stroke="#d85c5c"/>
+  </g>
+
+  <!-- Layer labels -->
+  <text x="65"  y="105" font-size="15" font-weight="600">A — Identity / PRT</text>
+  <text x="65"  y="125" font-size="13">Device join, token trust</text>
+
+  <text x="245" y="105" font-size="15" font-weight="600">B — WAM Store</text>
+  <text x="245" y="125" font-size="13">Web Account Manager</text>
+
+  <text x="420" y="105" font-size="15" font-weight="600">C — App Tokens</text>
+  <text x="420" y="125" font-size="13">MSAL / OneAuth caches</text>
+
+  <text x="605" y="105" font-size="15" font-weight="600">D — Session Layer</text>
+  <text x="605" y="125" font-size="13">WebView2 / Cookies</text>
+
+  <!-- Flow arrows -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <polygon points="0,0 10,4 0,8" fill="#4f4f4f"/>
+    </marker>
+  </defs>
+  <line x1="190" y1="110" x2="220" y2="110" stroke="#4f4f4f" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="370" y1="110" x2="400" y2="110" stroke="#4f4f4f" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="550" y1="110" x2="580" y2="110" stroke="#4f4f4f" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Cloud -->
+  <ellipse cx="740" cy="210" rx="60" ry="30" fill="#e8f1fc" stroke="#4f7ed9"/>
+  <text x="700" y="215" font-size="14" font-weight="600">AAD / CA</text>
+
+  <!-- Legend -->
+  <text x="40" y="220" font-size="13" fill="#4f4f4f">
+    Layers A–D represent distinct authentication states.  
+    Failures propagate left→right until Conditional Access validation.
+  </text>
+</svg>

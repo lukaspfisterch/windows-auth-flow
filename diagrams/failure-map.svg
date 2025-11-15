@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="310" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="20" y="35" font-size="20" font-weight="600" fill="#1b1b1b">Common Failure Map — Windows Auth Layers</text>
+
+  <!-- Table headers -->
+  <rect x="40" y="60" width="740" height="40" fill="#f2f2f2" stroke="#cccccc"/>
+  <text x="60" y="85" font-weight="600">#</text>
+  <text x="100" y="85" font-weight="600">Symptom</text>
+  <text x="410" y="85" font-weight="600">Likely Layer</text>
+  <text x="570" y="85" font-weight="600">Recommended Action</text>
+
+  <!-- Rows -->
+  <g font-size="13">
+    <rect x="40" y="100" width="740" height="36" fill="#ffffff" stroke="#e0e0e0"/>
+    <text x="60" y="122">1</text>
+    <text x="100" y="122">Teams / Outlook cannot sign in</text>
+    <text x="410" y="122">C</text>
+    <text x="570" y="122">Clear MSAL / OneAuth caches</text>
+
+    <rect x="40" y="136" width="740" height="36" fill="#fafafa" stroke="#e0e0e0"/>
+    <text x="60" y="158">2</text>
+    <text x="100" y="158">"Work account problem" toast</text>
+    <text x="410" y="158">B</text>
+    <text x="570" y="158">Reset WAM / reauthenticate</text>
+
+    <rect x="40" y="172" width="740" height="36" fill="#ffffff" stroke="#e0e0e0"/>
+    <text x="60" y="194">3</text>
+    <text x="100" y="194">MFA loop / browser SSO fails</text>
+    <text x="410" y="194">D</text>
+    <text x="570" y="194">Clear WebView2 cookies</text>
+
+    <rect x="40" y="208" width="740" height="36" fill="#fafafa" stroke="#e0e0e0"/>
+    <text x="60" y="230">4</text>
+    <text x="100" y="230">Device "Not joined" in dsregcmd</text>
+    <text x="410" y="230">A</text>
+    <text x="570" y="230">Rejoin device / refresh PRT</text>
+
+    <rect x="40" y="244" width="740" height="36" fill="#ffffff" stroke="#e0e0e0"/>
+    <text x="60" y="266">5</text>
+    <text x="100" y="266">Conditional Access mismatch</text>
+    <text x="410" y="266">A or C</text>
+    <text x="570" y="266">Validate PRT + policy flow</text>
+  </g>
+
+  <text x="40" y="295" font-size="12" fill="#555">
+    Each symptom maps to a dominant layer (A–D) for targeted, low-risk repair.
+  </text>
+</svg>
