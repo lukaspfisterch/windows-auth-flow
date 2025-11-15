@@ -27,5 +27,8 @@ This diagram fits inside the whitepaper (`docs/auth-flow-mini-whitepaper.md`):
    Device   Account   App Token  Session
    Trust    Context   Cache      State
 
+```
+
 ![Authentication Flow Overview](../diagrams/auth-flow-overview.svg)
+
 ![Common Failure Map](../diagrams/failure-map.svg)
