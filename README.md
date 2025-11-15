@@ -55,3 +55,8 @@ This mapping clarifies *who touches what* — reducing risk and ensuring repeata
       ↓       ↓          ↓                ↓
   Device  Account   App Token        Session State
   Trust   Context   Integrity        Persistence
+```
+
+![Authentication Flow Overview](diagrams/auth-flow-overview.svg)
+
+![Common Failure Map](diagrams/failure-map.svg)
