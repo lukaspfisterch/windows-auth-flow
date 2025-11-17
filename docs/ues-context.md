@@ -1,6 +1,6 @@
 # User Execution Shell (UES)
 
-![UES Schema](images/ues-schema.png)
+![UES Schema](../images/ues-schema.png)
 
 **Definition**  
 The *User Execution Shell* (UES) is the active operational layer created when a user signs in.  
