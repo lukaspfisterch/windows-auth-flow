@@ -60,3 +60,12 @@ This mapping clarifies *who touches what* — reducing risk and ensuring repeata
 ![Authentication Flow Overview](diagrams/auth-flow-overview.svg)
 
 ![Common Failure Map](diagrams/failure-map.svg)
+
+## Relation to the User Execution Shell (UES)
+
+This repository forms one layer inside the broader **User Execution Shell (UES)** concept.  
+The UES describes the active, authenticated shell in which a user process operates — a living boundary of identity, policy, and execution state.  
+While this repository isolates the *authentication flow* (PRT → WAM → MSAL → CA), the UES defines the *environment* that gives these flows continuity and meaning.
+
+See [docs/ues-context.md](docs/ues-context.md) for a concise description.
+
