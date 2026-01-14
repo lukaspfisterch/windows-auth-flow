@@ -1,48 +1,76 @@
-# User Execution Shell (UES)
+# 🐚 User Execution Shell (UES)
 
 ![UES Schema](../images/ues-schema.png "User Execution Shell – visual schema")
 
-**Definition**  
-The *User Execution Shell* (UES) is the active operational layer created when a user signs in.  
-It is not a login screen or a token store — it is the **runtime boundary** within which identity, policy, and execution coexist coherently.
+## 📝 Definition
+
+> [!NOTE]
+> The User Execution Shell (UES) is the persistent operational state created when a user signs in.
+
+It is not a login event and not a token container. It is the **runtime boundary** in which identity, policy, and running processes remain bound over time.
+
+As long as this boundary stays intact, authentication behaves predictably. When it degrades, systems may remain formally authenticated while becoming operationally unstable.
 
 ---
 
-## 1. Core Idea
+## 💡 Concept
 
-Every user action after sign-in occurs inside a persistent shell that holds:
-- the authenticated identity (PRT / WAM state),
-- device and session bindings,
-- policy context (CA, compliance, conditional state),
-- and the live process surface (apps, WebView2, scripts, brokers).
+After sign-in, user activity does not occur in isolation. It runs inside a coherent shell that holds:
 
-When the shell stays intact, authentication flows are stable.  
-When the shell fractures (profile reset, token drift, VDI rehydrate), authentication decays even if credentials are still valid.
+- 🆔 **Authenticated identity state** (PRT, WAM)
+- 🔗 **Device and session bindings**
+- 🛡️ **Policy context** (Conditional Access, compliance)
+- 💻 **Active execution surface** (applications, brokers, WebView2)
 
----
+This shell persists across application launches and token renewals. It is the **continuity layer** between authentication and execution.
 
-## 2. Relation to the Authentication Flow
-
-| Layer | Function within UES |
-|-------|----------------------|
-| Device / Logon | Instantiates the shell; establishes base trust |
-| PRT / WAM | Maintain identity continuity inside the shell |
-| MSAL / OneAuth | Issue delegated tokens to child processes |
-| CA / Policy | Evaluate outbound actions leaving the shell |
-
-The authentication flow is therefore the *breathing mechanism* of the UES — it keeps the shell alive.
+> [!TIP]
+> When the shell remains consistent, token renewal and sign-in flows are largely invisible. When it fractures (profile resets, token drift, VDI rehydration), authentication starts to decay even though credentials may still be valid.
 
 ---
 
-## 3. Why It Matters
+## 🔗 Relation to the Authentication Flow
 
-- **Stability:** a healthy UES equals predictable sign-in and token renewal behavior.  
-- **Observability:** each signal (PRT age, WAM error, CA result) belongs to one shell instance.  
-- **Governance:** higher layers (InfraCommand, ShadowState) can control lifecycle transitions safely.
+Authentication is not separate from the UES. It is the mechanism that keeps the shell coherent.
+
+| Component | Role inside the UES |
+| :--- | :--- |
+| **Device / Logon** | Creates the shell and establishes base trust |
+| **PRT / WAM** | Maintains identity continuity inside the shell |
+| **MSAL / OneAuth** | Issues delegated tokens to processes |
+| **Conditional Access** | Evaluates actions leaving the shell |
+
+The authentication flow continuously refreshes and validates the shell. If that flow stalls or desynchronizes, the shell remains present but loses integrity.
 
 ---
 
-## 4. Scope of This Repository
+## 🔍 Failure Characteristics
 
-This repository focuses on the authentication subsystem *inside* the UES.  
-Broader aspects — state diffing, telemetry, controlled teardown — belong to adjacent modules that treat the UES as a measurable entity.
+Typical failure patterns observed at the UES level:
+
+- ❗ Credentials valid, but applications behave as unauthenticated
+- ❗ Selective sign-in failures across apps
+- ❗ Licenses visible but UI or account state degraded
+- ❗ Fixes working temporarily and regressing later
+
+In these cases, the issue is rarely a single token. It is usually a **broken relationship** between layers inside the shell.
+
+---
+
+## 🎯 Scope
+
+This repository documents the authentication components operating *within* the User Execution Shell.
+
+Other concerns such as:
+- 🔄 Lifecycle control
+- 📊 State diffing
+- 📈 Telemetry and observability
+- 🧹 Controlled teardown and reinitialization
+
+...are treated as separate modules that operate *around* the UES rather than inside it.
+
+---
+
+### 📂 External References
+- [Main Framework Overview](file:///d:/DEV/projects/windows-auth-flow/README.md)
+- [Authentication Flow Mini-Whitepaper](file:///d:/DEV/projects/windows-auth-flow/docs/auth-flow-mini-whitepaper.md)

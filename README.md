@@ -1,71 +1,106 @@
-# Windows Authentication Flow Framework
+# 🔐 Windows Authentication Flow Framework
 
-## Overview
-A compact, engineering-grade framework to understand and troubleshoot the Windows authentication chain — from PRT to Conditional Access — across client and cloud boundaries.
+## 🎯 Purpose
 
-This repository distills lessons from years of real-world support work (Outlook / Teams / Edge sign-in issues) into a clear, layered model (A–D).  
-It provides structure, vocabulary, and safe intervention levels for 1st–3rd line support.
+> [!NOTE]
+> This repository documents a practical model to understand and troubleshoot the Windows authentication chain from device identity to cloud policy enforcement.
 
----
+It is not a product and not a tool collection. It is a **thinking framework** that grew out of real support incidents where standard fixes worked inconsistently or not at all.
 
-## Origin
-The project began as a series of PowerShell repair tools (`OutlookReset.ps1`, `TeamsReset.ps1`, `WAMCleanup.ps1`).  
-All targeted different symptoms — yet every root cause pointed to the same source:  
-**authentication state corruption**.
-
-From that observation emerged this framework:  
-**Tools → Diagnostics → Architecture.**
+The goal is simple: **make authentication state readable, traceable, and resettable** without blind trial and error.
 
 ---
 
-## Layer Model (A–D)
+## 🕒 How This Started
 
-| Layer | Scope | Description | Typical Reset / Check |
-|-------|--------|--------------|------------------------|
-| **A** | Identity Token | Device join integrity, PRT validity, AAD trust | `dsregcmd /status`, rejoin device |
-| **B** | WAM Store | Web Account Manager state (user + device contexts) | WAM reset or `runDll32.exe keymgr.dll,KRShowKeyMgr` |
-| **C** | App Tokens | MSAL / OneAuth caches, per-app token persistence | Targeted cache cleanup |
-| **D** | Session Layer | Edge WebView2 and cookie state | Browser or WebView2 reset |
+The work began with a set of PowerShell repair scripts (`OutlookReset.ps1`, `TeamsReset.ps1`, `WAMCleanup.ps1`).
 
-Each layer can fail independently — the framework maps **symptoms → layer → safe reset path**.
+Each script appeared to fix a different symptom:
+- **Outlook** shows a license but behaves as unlicensed
+- **Teams** refuses to sign in
+- **Edge SSO** breaks selectively
+
+Over time it became clear that these were not separate problems. They were different expressions of the **same underlying issue**: authentication state drift.
 
 ---
 
-## Support Competence Zones
+## 🏗️ The Layer Model (A–D)
+
+The authentication chain is treated as four distinct layers. Each layer has its own persistence, failure modes, and safe reset boundaries.
+
+| Layer | Scope | Description | Typical Validation / Reset |
+| :---: | :--- | :--- | :--- |
+| **A** | **Identity Token** | Device join state, PRT validity, Azure AD trust | `dsregcmd /status`, device rejoin |
+| **B** | **WAM Store** | Web Account Manager state (user + device context) | WAM reset, `runDll32.exe keymgr.dll,KRShowKeyMgr` |
+| **C** | **App Tokens** | MSAL / OneAuth caches, per-app token persistence | Targeted cache cleanup |
+| **D** | **Session Layer** | WebView2, browser cookies, session binding | Browser / WebView2 reset |
+
+> [!TIP]
+> Each layer can fail independently. Symptoms often surface in applications, but the break occurs earlier in the chain. The model is used to map: **symptom → layer → lowest-risk intervention**.
+
+---
+
+## 🛡️ Support Competence Boundaries
+
+The model also defines *who* should touch *which* layer.
 
 | Level | Responsibility | Access Scope |
-|--------|----------------|--------------|
-| 1️⃣ 1st Line | Guided reset via PowerShell menu (A–D) | User context only |
-| 2️⃣ 2nd Line | Layer-specific resets & validation | Local admin, logs |
-| 3️⃣ 3rd Line | Deep analysis, CA & policy flow correlation | Directory / AAD access |
+| :--- | :--- | :--- |
+| **1st Line** | Guided resets following predefined paths | User context only |
+| **2nd Line** | Layer-specific validation and correction | Local admin, logs |
+| **3rd Line** | Correlation with Conditional Access and directory state | Azure AD / directory access |
 
-This mapping clarifies *who touches what* — reducing risk and ensuring repeatability.
+> [!IMPORTANT]
+> Clear boundaries reduce accidental damage and prevent over-resetting systems that only require localized correction.
 
 ---
 
-## Visual Overview
+## 🔄 Authentication Flow Overview
 
-```text
-+-----------------------------------------------------------+
-|                 WINDOWS AUTHENTICATION FLOW               |
-+-----------------------------------------------------------+
-|  A  |  B  |  C  |  D  |                                   |
-| PRT | WAM | MSAL/OneAuth | WebView2/Cookies | -> AAD/CA  |
-+-----------------------------------------------------------+
-      ↓       ↓          ↓                ↓
-  Device  Account   App Token        Session State
-  Trust   Context   Integrity        Persistence
+```mermaid
+graph LR
+    A[PRT - Device Trust] --> B[WAM - Account Context]
+    B --> C[App Token - Integrity]
+    C --> D[Session - Persistence]
+    D --> E[AAD / CA]
+    
+    subgraph Layers
+        A
+        B
+        C
+        D
+    end
 ```
 
-![Authentication Flow Overview](diagrams/auth-flow-overview.svg)
+### 🖼️ Visual References
+- [Authentication Flow Overview](file:///d:/DEV/projects/windows-auth-flow/diagrams/auth-flow-overview.svg)
+- [Common Failure Map](file:///d:/DEV/projects/windows-auth-flow/diagrams/failure-map.svg)
 
-![Common Failure Map](diagrams/failure-map.svg)
+---
 
-## Relation to the User Execution Shell (UES)
+## 🐚 Relation to the User Execution Shell (UES)
 
-This repository forms one layer inside the broader **User Execution Shell (UES)** concept.  
-The UES describes the active, authenticated shell in which a user process operates — a living boundary of identity, policy, and execution state.  
-While this repository isolates the *authentication flow* (PRT → WAM → MSAL → CA), the UES defines the *environment* that gives these flows continuity and meaning.
+This repository focuses strictly on authentication state. It fits into a broader concept called the **User Execution Shell (UES)**: the persistent runtime boundary created when a user signs in.
 
-See [docs/ues-context.md](docs/ues-context.md) for a concise description.
+The UES is not a token store or a login event. It is the environment in which identity, policy, and running processes remain bound over time.
 
+This repository describes how authentication flows through that shell.
+
+> [!NOTE]
+> A concise description of the UES concept is available in: [docs/ues-context.md](file:///d:/DEV/projects/windows-auth-flow/docs/ues-context.md)
+
+---
+
+## ⚠️ What This Is Not
+
+- ❌ Not an official Microsoft model
+- ❌ Not a replacement for documentation
+- ❌ Not a universal fix-it guide
+
+It is a structured way to think about failures that otherwise appear random.
+
+---
+
+## 🚦 Status
+
+**Work in progress.** The model evolves as new failure patterns emerge.
