@@ -72,5 +72,5 @@ Other concerns such as:
 ---
 
 ### 📂 External References
-- [Main Framework Overview](file:///d:/DEV/projects/windows-auth-flow/README.md)
-- [Authentication Flow Mini-Whitepaper](file:///d:/DEV/projects/windows-auth-flow/docs/auth-flow-mini-whitepaper.md)
+- [Main Framework Overview](../README.md)
+- [Authentication Flow Mini-Whitepaper](auth-flow-mini-whitepaper.md)

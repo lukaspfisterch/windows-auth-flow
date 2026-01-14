@@ -47,10 +47,10 @@ The UES treats the Windows authentication flow as a controllable subsystem with:
 
 For more details on interfaces (signals in/out), control points (A–D), and how this map is used in operations and automation, see the separate context document:
 
-👉 **[docs/ues-context.md](file:///d:/DEV/projects/windows-auth-flow/docs/ues-context.md)**
+👉 **[docs/ues-context.md](ues-context.md)**
 
 ---
 
 ### 📂 External References
-- [Main Framework Overview](file:///d:/DEV/projects/windows-auth-flow/README.md)
-- [User Execution Shell Context](file:///d:/DEV/projects/windows-auth-flow/docs/ues-context.md)
+- [Main Framework Overview](../README.md)
+- [User Execution Shell Context](ues-context.md)

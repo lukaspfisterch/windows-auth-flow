@@ -73,8 +73,8 @@ graph LR
 ```
 
 ### 🖼️ Visual References
-- [Authentication Flow Overview](file:///d:/DEV/projects/windows-auth-flow/diagrams/auth-flow-overview.svg)
-- [Common Failure Map](file:///d:/DEV/projects/windows-auth-flow/diagrams/failure-map.svg)
+- [Authentication Flow Overview](diagrams/auth-flow-overview.svg)
+- [Common Failure Map](diagrams/failure-map.svg)
 
 ---
 
@@ -87,7 +87,7 @@ The UES is not a token store or a login event. It is the environment in which id
 This repository describes how authentication flows through that shell.
 
 > [!NOTE]
-> A concise description of the UES concept is available in: [docs/ues-context.md](file:///d:/DEV/projects/windows-auth-flow/docs/ues-context.md)
+> A concise description of the UES concept is available in: [docs/ues-context.md](docs/ues-context.md)
 
 ---
 
